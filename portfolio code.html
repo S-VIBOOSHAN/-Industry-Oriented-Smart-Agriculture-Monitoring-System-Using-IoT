@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Irrigation System</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #1e293b;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 15px;
+    }
+
+    .value {
+      font-size: 24px;
+      color: #22c55e;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #1e293b;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌱 Smart Irrigation System</h1>
+  <p>IoT Based Monitoring & Automation</p>
+</header>
+
+<div class="container">
+
+  <!-- TEAM -->
+  <div class="card">
+    <h2>👨‍💻 user name </h2>
+    <p> Vibooshan</p>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="card">
+    <h2>🚀 Features</h2>
+    <ul>
+      <li>Automatic Irrigation</li>
+      <li>Soil Moisture Monitoring</li>
+      <li>Water Level Detection</li>
+      <li>Rain Detection</li>
+      <li>IoT Cloud Monitoring (ThingSpeak)</li>
+    </ul>
+  </div>
+
+  <!-- LIVE DATA -->
+  <div class="card">
+    <h2>📊 Live Data</h2>
+
+    <div class="grid">
+      <div>Temperature: <div class="value" id="temp">--</div></div>
+      <div>Humidity: <div class="value" id="hum">--</div></div>
+      <div>Soil: <div class="value" id="soil">--</div></div>
+      <div>Water Level: <div class="value" id="water">--</div></div>
+      <div>Flow: <div class="value" id="flow">--</div></div>
+      <div>Rain: <div class="value" id="rain">--</div></div>
+      <div>Motor: <div class="value" id="motor">--</div></div>
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="card">
+    <h2>📘 Project Description</h2>
+    <p>
+      This Smart Irrigation System uses IoT to monitor environmental parameters like soil moisture,
+      temperature, humidity, and water level. It automatically controls the motor based on real-time
+      conditions, improving water efficiency and reducing manual effort.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Smart Irrigation Project</p>
+</footer>
+
+<script>
+  // 👉 Replace YOUR CHANNEL ID
+  const channelID = "3300823";
+  const apiKey = "DASTW2Q44HGZON6U";
+
+  async function fetchData() {
+    const url = `https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${apiKey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    document.getElementById("temp").innerText = data.field1;
+    document.getElementById("hum").innerText = data.field2;
+    document.getElementById("soil").innerText = data.field3 + "%";
+    document.getElementById("water").innerText = data.field4;
+    document.getElementById("flow").innerText = data.field5;
+    document.getElementById("motor").innerText = data.field6 == 1 ? "ON" : "OFF";
+    document.getElementById("rain").innerText = data.field7 == 0 ? "YES" : "NO";
+  }
+
+  setInterval(fetchData, 5000);
+  fetchData();
+</script>
+
+</body>
+</html>
